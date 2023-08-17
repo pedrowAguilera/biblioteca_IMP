@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Cadastro de livros</h1>
+    <input id="nomeLivro" placeholder="Nome" type="text">
+    <input id="autorLivro" placeholder="Autor" type="text">
+    <input id="anoLivro" placeholder="Ano" type="number">
+    <input id="imagemLivro" placeholder="URL da Imagem" type="text">
+
+
+    <button class="adicionar" onclick="adicionar()">Adicionar Livro</button>
+    <button class="mostrar" onclick="mostrarLivro()">Mostrar Livro</button>
+    <button class="tudo" onclick="mostrarTodosLivros()">Mostrar Todos os Livros</button>
+    <button class="limpar" onclick="limparCampos()">Limpar</button>
+    <button class="limpa-tudo" onclick="apagarTudo()">Apagar Tudo</button>
+
+    
+    <p id="resultado"></p>
+    <p id="quantidadeLivros"></p>
+    <ul id="livrosAdicionados"></ul>
+
+    <script>
+        let biblioteca = [];
+
+        function cadastro(nome, autor, ano) {
+            var livro = {
+                titulo: nome,
+                autor: autor,
+                ano: ano
+            };
+            biblioteca.push(livro);
+        }
+
+        function adicionar() {
+            let nome = document.getElementById('nomeLivro').value;
+            let autor = document.getElementById('autorLivro').value;
+            let ano = document.getElementById('anoLivro').value;
+            cadastro(nome, autor, ano);
+        }
+
+        function mostrarLivro() {
+            let nomeBusca = document.getElementById('nomeLivro').value;
+            let livroEncontrado = biblioteca.find(livro => livro.titulo === nomeBusca);
+
+            if (livroEncontrado) {
+                document.getElementById('resultado').innerText = `Livro encontrado: ${livroEncontrado.titulo} (Autor: ${livroEncontrado.autor}, Ano: ${livroEncontrado.ano})`;
+            } else {
+                document.getElementById('resultado').innerText = "O livro não se encontra em nossa biblioteca.";
+            }
+        }
+
+        function mostrarTodosLivros() {
+            let listaLivros = document.getElementById('livrosAdicionados');
+            let quantidadeLivros = document.getElementById('quantidadeLivros');
+            listaLivros.innerHTML = "";
+
+            if (biblioteca.length > 0) {
+                quantidadeLivros.innerText = `Quantidade de livros adicionados: ${biblioteca.length}`;
+                biblioteca.forEach(livro => {
+                    let itemLivro = document.createElement('li');
+                    itemLivro.innerText = `Livro: ${livro.titulo} (Autor: ${livro.autor}, Ano: ${livro.ano})`;
+                    listaLivros.appendChild(itemLivro);
+                });
+            } else {
+                quantidadeLivros.innerText = "Nenhum livro foi adicionado ainda.";
+            }
+        }
+
+        function limparCampos() {
+            document.getElementById('nomeLivro').value = "";
+            document.getElementById('autorLivro').value = "";
+            document.getElementById('anoLivro').value = "";
+            document.getElementById('imagemLivro').value = "";
+            document.getElementById('resultado').innerText = "";
+            document.getElementById('quantidadeLivros').innerText = "";
+            document.getElementById('livrosAdicionados').innerHTML = "";
+        }
+
+        function apagarTudo() {
+            biblioteca = [];
+            limparCampos();
+        }
+    </script>
+</body>
+</html>
